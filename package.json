@@ -1,0 +1,24 @@
+{
+  "name": "bomi_fama_nodejs",
+  "version": "0.2.0",
+  "description": "Server-side bridge between python and Unity3D for the 4th assignment of Biomedical Robotics course, UniGe",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hypothe/bomi_fama_nodejs.git"
+  },
+  "author": "Marco Gabriele Fedozzi",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/hypothe/bomi_fama_nodejs/issues"
+  },
+  "homepage": "https://github.com/hypothe/bomi_fama_nodejs#readme",
+  "dependencies": {
+    "express": "^4.17.2",
+    "socket.io": "^4.4.1",
+    "ws": "^8.4.0"
+  }
+}
