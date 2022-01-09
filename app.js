@@ -39,7 +39,7 @@ io.on('connection', (socket) => {
 	// Update the currently stored joints' values and publish
 	// them to all the clients interested in receiving those.
 	socket.on("jointsUpdate", (msg) => {
-		console.log("Joints rec");
+		console.log("Joints rec %o", msg);
 		for (var jointID in msg.joints) {
 			jointsValue[jointID] = msg.joints[jointID];
 		}
