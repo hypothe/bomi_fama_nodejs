@@ -11,6 +11,10 @@ const conn_port = 4242;
 const jointsValue = [];
 const jointRoom = "joint_room";
 
+app.get("", (req, res)=>{
+	res.sendFile(__dirname + '/static/test.html')
+})
+
 io.on('connection', (socket) => {
 	let sub2JointUpdates = false;
 	// DEBUG
@@ -23,11 +27,13 @@ io.on('connection', (socket) => {
 	// Enlist the client interested in receiving the joint updates
 	socket.on("subscribeToJointsValuesUpdates", () => {
 		socket.join(jointRoom);
+		console.log("Client added to list");
 	})
 	
 	// Remove the client from the list of those interested in receiving the joint updates
 	socket.on("unsubscribeToJointsValuesUpdates", () => {
-		socket.leave(jointRoom)
+		socket.leave(jointRoom);
+		console.log("Client removed from list");
 	})
 	
 	// Update the currently stored joints' values and publish
@@ -37,7 +43,7 @@ io.on('connection', (socket) => {
 			jointsValue[jointID] = msg.joints[jointID];
 		}
 		// if this user
-		socket.to(jointRoom).emit(jointsValue);
+		socket.to(jointRoom).emit("getJointsValues", jointsValue);
 	})
 })
 

@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+	
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <head>
+    <title>Socket.IO chat</title>
+    <style>
+			h1 { text-align: center; margin: auto;}
+      body { 
+				text-align: center; 
+				margin: auto; 
+				padding-bottom: 3rem; 
+				font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+				font-size: 24px;
+				width: 80%;
+			}
+			div { text-align: center; margin: auto; width: 60%;}
+
+			.btn-control .button {
+				margin: auto;
+				background-color: #d4f5e9; 
+				border: 3px solid rgb(35, 116, 98); 
+				border-radius: 6px;
+				color: rgb(84, 122, 103); 
+				font-size: 36px;
+				padding: 20px 20px; /* Some padding */
+				cursor: pointer; /* Pointer/hand icon */
+				width: 100%; /* Set a width if needed */
+				display: block; /* Make the buttons appear below each other */
+			}
+
+			
+			.btn-control .button:not(:last-child) {
+				border-bottom: none; /* Prevent double borders */
+			}
+			
+			/* Add a background color on hover */
+			.btn-control .button:hover {
+				background-color: #48695e;
+				color: rgb(225, 233, 224);
+			}
+			/*	Stop button */
+		
+			
+			@media only screen and (min-width: 600px){
+				.btn-control .button{
+					width: 40%;
+				}
+			}
+
+    </style>
+  </head>
+  <body>
+		<h1>Socket test</h1>
+		<p>This is, admittedly, not a very interesting button</p>
+    <div class="btn-control">
+			<button class="button" onclick="buttonClicked()" type="button" name="btn">Subscribe</button>
+			<button class="button" onclick="sendJoints()" type="button" name="btnJnt">SendJoints</button>
+		</div>
+		<p id="presult">Joints:</p>
+  </body>
+	<script src="/socket.io/socket.io.js"></script>
+	<script>
+		const socket = io();
+
+		var ii = 0;
+
+		function buttonClicked(){
+			let msg = {};
+			socket.emit('subscribeToJointsValuesUpdates', msg);
+		}
+
+		function sendJoints(){
+			let msg = {joints = [ii, ii, ii]}
+			ii += 1;
+			socket.emit('jointsUpdate', msg);
+		}
+
+		socket.on('getJointsValues', (msg)=>{
+			let out = '';
+			for (var jointValue of msg){
+				out+=jointValue+" ";
+			}
+			document.getElementById('presult').innerHTML = "Joints: " + out;
+		})
+
+		
+	</script>
+</html>
