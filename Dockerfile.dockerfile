@@ -8,4 +8,4 @@ RUN git clone --branch test https://github.com/hypothe/bomi_fama_nodejs.git proj
 WORKDIR ${HOME}/project
 RUN npm install
 
-#ENTRYPOINT [ "npm start" ]
+ENTRYPOINT [ "bash" ]
