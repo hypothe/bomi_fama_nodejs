@@ -4,7 +4,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <head>
-    <title>Socket.IO chat</title>
+    <title>Socket.IO Test</title>
     <style>
 			h1 { text-align: center; margin: auto;}
       body { 
@@ -72,17 +72,13 @@
 		}
 
 		function sendJoints(){
-			let msg = {joints = [ii, ii, ii]}
+			let msg = {joints: [ii, ii, ii]}
 			ii += 1;
 			socket.emit('jointsUpdate', msg);
 		}
 
 		socket.on('getJointsValues', (msg)=>{
-			let out = '';
-			for (var jointValue of msg){
-				out+=jointValue+" ";
-			}
-			document.getElementById('presult').innerHTML = "Joints: " + out;
+			document.getElementById('presult').innerHTML = "Joints: " + msg;
 		})
 
 		

@@ -27,23 +27,23 @@ io.on('connection', (socket) => {
 	// Enlist the client interested in receiving the joint updates
 	socket.on("subscribeToJointsValuesUpdates", () => {
 		socket.join(jointRoom);
-		console.log("Client added to list");
+		console.log("Client added to list %s", jointRoom);
 	})
 	
 	// Remove the client from the list of those interested in receiving the joint updates
 	socket.on("unsubscribeToJointsValuesUpdates", () => {
 		socket.leave(jointRoom);
-		console.log("Client removed from list");
+		console.log("Client removed from list %s", jointRoom);
 	})
 	
 	// Update the currently stored joints' values and publish
 	// them to all the clients interested in receiving those.
 	socket.on("jointsUpdate", (msg) => {
+		console.log("Joints rec");
 		for (var jointID in msg.joints) {
 			jointsValue[jointID] = msg.joints[jointID];
 		}
-		// if this user
-		socket.to(jointRoom).emit("getJointsValues", jointsValue);
+		io.to(jointRoom).emit("getJointsValues", jointsValue);
 	})
 })
 
