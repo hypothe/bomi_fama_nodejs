@@ -1,9 +1,13 @@
 FROM node:17
 ENV HOME=/root
-WORKDIR ${HOME}
-RUN git clone https://github.com/hypothe/bomi_fama_nodejs.git project 
+ENV WS=${HOME}/project
+EXPOSE 4242
 
-WORKDIR ${HOME}/project
+WORKDIR ${HOME}
+#RUN git clone --branch test https://github.com/hypothe/bomi_fama_nodejs.git project 
+COPY . ${WS}
+
+WORKDIR ${WS}
 RUN npm install
 
 ENTRYPOINT [ "npm", "start" ]
