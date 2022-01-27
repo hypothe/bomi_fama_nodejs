@@ -7,7 +7,13 @@ const app = express();
 const server = http.createServer(app);
 const io = new Server(server);
 
+
+const unity_server = http.createServer(app);
+const iov2 = require(socket.ioV2)(unity_server)
+
 const conn_port = 4242;
+const unity_conn_port = 4243;
+
 const jointsValue = [];
 const jointRoom = "joint_room";
 
@@ -49,6 +55,11 @@ io.on('connection', (socket) => {
 
 server.listen(conn_port, () => {
 	console.log("Server started.")
+})
+
+
+unity_server.listen(unity_conn_port, () => {
+	console.log("Unity server started.")
 })
 
 /************************************************************/
