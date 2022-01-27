@@ -7,9 +7,8 @@ const app = express();
 const server = http.createServer(app);
 const io = new Server(server);
 
-const unity_app = express();
 const unity_server = require('http').Server(app);
-const iov2 = require('socket.ioV2')(unity_server);
+const iov2 = require('socket.io-v2')(unity_server);
 
 const conn_port = 4242;
 const unity_conn_port = 4243;
@@ -23,13 +22,6 @@ app.get("", (req, res)=>{
 	res.sendFile(__dirname + '/static/test.html')
 })
 
-
-unity_app.get("", (req, res)=>{
-	res.sendFile(__dirname + '/static/test.html')
-})
-
-var unity_socket=null;
-
 iov2.on('connection', (socket) => {
 	// DEBUG
 	console.log("Data received by %s", socket.request.url);
@@ -38,7 +30,6 @@ iov2.on('connection', (socket) => {
 
 	socket.on("disconnect", () => {
 		console.log("Unity disconnected %s", socket.request.url);
-		unity_socket = null;
 	})
 
 })
