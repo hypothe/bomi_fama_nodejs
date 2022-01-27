@@ -9,7 +9,7 @@ const io = new Server(server);
 
 
 const unity_server = http.createServer(app);
-const iov2 = require(socket.ioV2)(unity_server)
+const iov2 = require('socket.ioV2')(unity_server)
 
 const conn_port = 4242;
 const unity_conn_port = 4243;
@@ -19,6 +19,21 @@ const jointRoom = "joint_room";
 
 app.get("", (req, res)=>{
 	res.sendFile(__dirname + '/static/test.html')
+})
+
+var unity_socket=null;
+
+iov2.on('connection', (socket) => {
+	// DEBUG
+	console.log("Data received by %s", socket.request.url);
+	// TODO: change from single socket to list
+	unity_socket = socket;
+
+	socket.on("disconnect", () => {
+		console.log("Unity disconnected %s", socket.request.url);
+		unity_socket = null;
+	})
+
 })
 
 io.on('connection', (socket) => {
@@ -50,8 +65,14 @@ io.on('connection', (socket) => {
 		}
 		// if this user
 		socket.to(jointRoom).emit("getJointsValues", jointsValue);
+
+		if (unity_socket!=null){
+			unity_socket.emit("getJointsValues", jointsValue);
+		}
 	})
 })
+
+
 
 server.listen(conn_port, () => {
 	console.log("Server started.")
