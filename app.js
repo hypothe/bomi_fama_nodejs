@@ -7,17 +7,24 @@ const app = express();
 const server = http.createServer(app);
 const io = new Server(server);
 
-
-const unity_server = http.createServer(app);
-const iov2 = require('socket.ioV2')(unity_server)
+const unity_app = express();
+const unity_server = require('http').Server(app);
+const iov2 = require('socket.ioV2')(unity_server);
 
 const conn_port = 4242;
 const unity_conn_port = 4243;
 
 const jointsValue = [];
 const jointRoom = "joint_room";
+const unityRoom = "unity_room";
+
 
 app.get("", (req, res)=>{
+	res.sendFile(__dirname + '/static/test.html')
+})
+
+
+unity_app.get("", (req, res)=>{
 	res.sendFile(__dirname + '/static/test.html')
 })
 
@@ -26,8 +33,8 @@ var unity_socket=null;
 iov2.on('connection', (socket) => {
 	// DEBUG
 	console.log("Data received by %s", socket.request.url);
-	// TODO: change from single socket to list
-	unity_socket = socket;
+
+	socket.join(unityRoom);
 
 	socket.on("disconnect", () => {
 		console.log("Unity disconnected %s", socket.request.url);
@@ -37,7 +44,6 @@ iov2.on('connection', (socket) => {
 })
 
 io.on('connection', (socket) => {
-	let sub2JointUpdates = false;
 	// DEBUG
 	console.log("Data received by %s", socket.request.url);
 
@@ -64,11 +70,10 @@ io.on('connection', (socket) => {
 			jointsValue[jointID] = msg.joints[jointID];
 		}
 		// if this user
-		socket.to(jointRoom).emit("getJointsValues", jointsValue);
+		io.to(jointRoom).emit("getJointsValues", jointsValue);
 
-		if (unity_socket!=null){
-			unity_socket.emit("getJointsValues", jointsValue);
-		}
+		iov2.to(unityRoom).emit("getJointsValues", jointsValue);
+		
 	})
 })
 
