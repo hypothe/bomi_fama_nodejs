@@ -72,7 +72,7 @@
 		}
 
 		function sendJoints(){
-			let msg = {joints = [ii, ii, ii]}
+			let msg = {joints: [ii, ii, ii]}
 			ii += 1;
 			socket.emit('jointsUpdate', msg);
 		}
