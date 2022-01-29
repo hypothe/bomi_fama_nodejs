@@ -5,34 +5,29 @@ const { Server } = require('socket.io');
 
 const app = express();
 const server = http.createServer(app);
+//const io = new Server(server, {transports: ['websocket', 'polling']});
 const io = new Server(server);
 
-const unity_server = require('http').Server(app);
-const iov2 = require('socket.io-v2')(unity_server);
+
+
+// WebSocketServer living on the same server of socket.io, ON A DIFFERENT PATH
+// *should not* conflict
+
+/*
+const { WebSocketServer } = require('ws');
+const wss = new WebSocketServer({server: server, path: '/ws'});
+*/
 
 const conn_port = 4242;
-const unity_conn_port = 4243;
 
 const jointsValue = [];
 const jointRoom = "joint_room";
-const unityRoom = "unity_room";
 
 
 app.get("", (req, res)=>{
 	res.sendFile(__dirname + '/static/test.html')
 })
 
-iov2.on('connection', (socket) => {
-	// DEBUG
-	console.log("Data received by %s", socket.request.url);
-
-	socket.join(unityRoom);
-
-	socket.on("disconnect", () => {
-		console.log("Unity disconnected %s", socket.request.url);
-	})
-
-})
 
 io.on('connection', (socket) => {
 	// DEBUG
@@ -60,43 +55,33 @@ io.on('connection', (socket) => {
 		for (var jointID in msg.joints) {
 			jointsValue[jointID] = msg.joints[jointID];
 		}
-		// if this user
+		// send data to all interested socket.io
 		io.to(jointRoom).emit("getJointsValues", jointsValue);
-
-		iov2.to(unityRoom).emit("getJointsValues", jointsValue);
+		// send data to each websocket client
 		
+		/*
+		wss.clients.forEach(function each(client) {
+			if (client.readyState === WebScoket.OPEN){
+				client.send(jointsValue);
+			}
+		});
+		*/
+
 	})
 })
 
+/*
+wss.on('connection', (ws) => {
+	ws.on('message', (data) => {
+		// log
+		console.log("Received message from Unity client %s %o", ws.url, data);
+	})
+
+})
+*/
 
 
 server.listen(conn_port, () => {
 	console.log("Server started.")
 })
 
-
-unity_server.listen(unity_conn_port, () => {
-	console.log("Unity server started.")
-})
-
-/************************************************************/
-// DEBUG: fall-back if socket.io won't work in Unity
-/*
-const { parse } = require('url');
-const WebScoket, { WebSocketServer } = require('ws');
-
-var ws_ud = [];
-
-const wss_ud = new WebSocketServer({ noServer=true }, () => {
-	console.log('Unity web-socket side started');
-})
-
-wss_ud.on('connection', (ws) => {
-	ws_ud.push(ws); // store the sockets of incoming Unity connections 
-									// (hardly more than one, but you never know)
-	ws.on('message', (data) => {
-		// log
-		console.log("Received message from Unity client %s %o", ws.url, data);
-	})
-})
-*/
