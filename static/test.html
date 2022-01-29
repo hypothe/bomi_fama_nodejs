@@ -64,7 +64,7 @@
 	<script>
 		const socket = io();
 
-		var ii = 0;
+		const n_joints = 3;
 
 		function buttonClicked(){
 			let msg = {};
@@ -72,14 +72,16 @@
 		}
 
 		function sendJoints(){
-			let msg = {joints: [ii, ii, ii]}
-			ii += 1;
+			let msg = {joints: []}
+			for (let i = 0; i < n_joints; i++){
+				msg.joints[i] = (Math.PI * (1 - 2*Math.random())).toFixed(2);
+			}
 			socket.emit('jointsUpdate', msg);
 		}
 
 		socket.on('getJointsValues', (msg)=>{
 			let out = '';
-			for (var jointValue of msg){
+			for (var jointValue of msg.joints){
 				out+=jointValue+" ";
 			}
 			document.getElementById('presult').innerHTML = "Joints: " + out;

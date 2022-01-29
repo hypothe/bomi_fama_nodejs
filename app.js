@@ -57,14 +57,10 @@ io.on('connection', (socket) => {
 	// Update the currently stored joints' values and publish
 	// them to all the clients interested in receiving those.
 	socket.on("jointsUpdate", (msg) => {
-		for (var jointID in msg.joints) {
-			jointsValue[jointID] = msg.joints[jointID];
-		}
-		// if this user
-		io.to(jointRoom).emit("getJointsValues", jointsValue);
-
-		iov2.to(unityRoom).emit("getJointsValues", jointsValue);
-		
+		// Send data back to the sockets V4
+		io.to(jointRoom).emit("getJointsValues", msg);
+		// Send data back to the sockets V2
+		iov2.to(unityRoom).emit("getJointsValues", msg);
 	})
 })
 
