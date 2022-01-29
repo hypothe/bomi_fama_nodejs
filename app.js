@@ -78,25 +78,3 @@ server.listen(conn_port, () => {
 unity_server.listen(unity_conn_port, () => {
 	console.log("Unity server started.")
 })
-
-/************************************************************/
-// DEBUG: fall-back if socket.io won't work in Unity
-/*
-const { parse } = require('url');
-const WebScoket, { WebSocketServer } = require('ws');
-
-var ws_ud = [];
-
-const wss_ud = new WebSocketServer({ noServer=true }, () => {
-	console.log('Unity web-socket side started');
-})
-
-wss_ud.on('connection', (ws) => {
-	ws_ud.push(ws); // store the sockets of incoming Unity connections 
-									// (hardly more than one, but you never know)
-	ws.on('message', (data) => {
-		// log
-		console.log("Received message from Unity client %s %o", ws.url, data);
-	})
-})
-*/
