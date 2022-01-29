@@ -64,7 +64,7 @@
 	<script>
 		const socket = io();
 
-		let jnts = [0,0,0]
+		const n_joints = 3;
 
 		function buttonClicked(){
 			let msg = {};
@@ -72,15 +72,19 @@
 		}
 
 		function sendJoints(){
-			let msg = {joints: jnts}
-			for (const i in jnts) {
-					jnts[i] = Math.PI * (1 - 2*Math.random());
+			let msg = {joints: []}
+			for (let i = 0; i < n_joints; i++){
+				msg.joints[i] = (Math.PI * (1 - 2*Math.random())).toFixed(2);
 			}
 			socket.emit('jointsUpdate', msg);
 		}
 
 		socket.on('getJointsValues', (msg)=>{
-			document.getElementById('presult').innerHTML = "Joints: " + msg;
+			let out = '';
+			for (var jointValue of msg.joints){
+				out+=jointValue+" ";
+			}
+			document.getElementById('presult').innerHTML = "Joints: " + out;
 		})
 
 		
