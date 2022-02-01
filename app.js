@@ -1,29 +1,25 @@
-
 const express = require('express');
 const http = require('http');
 const { Server } = require('socket.io');
+const compression = require('compression');
 
 const app = express();
 const server = http.createServer(app);
 const io = new Server(server);
 
-const unity_server = require('http').Server(app);
-
 const conn_port = 4242;
-const unity_conn_port = 4243;
 
-const jointsValue = [];
 const jointRoom = "joint_room";
-const unityRoom = "unity_room";
 
 
 app.get("", (req, res)=>{
 	res.sendFile(__dirname + '/static/test.html')
 })
-
-app.get("/unity", (req, res)=>{
-	res.sendFile(__dirname + '/webgl/index.html')
-})
+app.use(compression());
+app.use('/unity', express.static(path.join(__dirname, 'webgl')));
+//app.get("/unity", (req, res)=>{
+//	res.sendFile(__dirname + '/webgl/index.html')
+//})
 
 
 io.on('connection', (socket) => {
