@@ -13,15 +13,11 @@ const conn_port = 4242;
 const jointRoom = "joint_room";
 
 
-app.get("", (req, res)=>{
+app.get("/test", (req, res)=>{
 	res.sendFile(__dirname + '/static/test.html')
 })
 app.use(compression());
-app.use('/unity', express.static(path.join(__dirname, 'webgl')));
-//app.get("/unity", (req, res)=>{
-//	res.sendFile(__dirname + '/webgl/index.html')
-//})
-
+app.use('/', express.static(path.join(__dirname, 'webgl')));
 
 io.on('connection', (socket) => {
 	// DEBUG
@@ -50,7 +46,6 @@ io.on('connection', (socket) => {
 		io.to(jointRoom).emit("getJointsValues", msg);
 	})
 })
-
 
 server.listen(conn_port, () => {
 	console.log("Server started.")
