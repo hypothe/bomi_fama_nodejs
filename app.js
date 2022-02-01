@@ -6,7 +6,7 @@ const path = require('path');
 
 const app = express();
 const server = http.createServer(app);
-const io = new Server(server);
+const io = new Server(server, {transports: ['websocket', 'polling']});
 
 const conn_port = 4242;
 
