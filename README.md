@@ -37,7 +37,7 @@ $ docker run -it --rm -p <reroute-port>:4242 <your-container-name>
 # Docker-Compose
 
 Not presented here, but certainly might come in handy.
-Give a look at the [whole project this is a submodule of](https://github.com/hypothe/biorob_group12_bomi) for an example.
+Give a look at the [whole project this is a submodule of](https://github.com/hypothe/bomi-cam-unity3dof-control) for an example.
 
 ---
 
@@ -46,7 +46,7 @@ Give a look at the [whole project this is a submodule of](https://github.com/hyp
 A lot of effort went into making this side of the project work, and a lot of googling and scrolling StackOverflow more than anything. Since no single source of information was used, but a mashup of many separate things, here are reported some of the articles, videos and posts I found useful (even if many of them did not directly contribute to the final product).
 
 - [kTonpa/3dof-robot-arm-using-unity3D](https://github.com/kTonpa/3dof-robot-arm-using-unity3D): the original Unity3D project that was expanded here to implement the `socket.io` connection.
--	thanks to [Aman](https://github.com/robotmiro1), one of the members of the group working on the [whole project](https://github.com/hypothe/biorob_group12_bomi) for the first edit of the original Unity3D project (_see above_)
+-	thanks to [Aman](https://github.com/robotmiro1), one of the members of the group working on the [whole project](https://github.com/hypothe/bomi-cam-unity3dof-control) for the first edit of the original Unity3D project (_see above_)
 - [tomowatt/unity-docker-example](https://github.com/tomowatt/unity-docker-example): simple nginx server for a WebGL-built Unity3D game (see also his [article on the process](https://dev.to/tomowatt/running-an-unity-webgl-game-within-docker-5039))
 - [Rocher0724/socket.io-unity](https://github.com/Rocher0724/socket.io-unity): the first working socket.io Plugin for Unity3D I found. Albeit it did not work with WebGL (not the plugin's fault, it's simply not designed for that) it might be useful for someone else arriving here. Note that it requires socket.io@2.0.1 (or perhaps up to 2.4.1, haven't tested it myself), so if you need to use another version in the server keep that in mind (give a look at the `socket.io-v2` branch of this repo to get an idea for the implementation, while the installation procedure is explained in thi [stackoverflow thread](https://stackoverflow.com/questions/26414587/how-to-install-multiple-versions-of-package-using-npm))
 - [KyleDulce/Unity-Socketio](https://github.com/KyleDulce/Unity-Socketio): I haven't tested it out, but it seems a more recent `socket.io-Unity3D` plugin, supporting socket.ioV4. I found it out too later unfortunately, but can be useful for someone out there
@@ -62,4 +62,4 @@ THanks for asking! The original project, as mentioned in the **Credits**, can be
 
 # The whole project
 
-This is a submodule of the project [Body-Machine Interface](https://github.com/hypothe/biorob_group12_bomi).
+This is a submodule of the project [Body-Machine Interface](https://github.com/hypothe/bomi-cam-unity3dof-control).
