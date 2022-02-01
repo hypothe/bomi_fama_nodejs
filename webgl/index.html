@@ -113,13 +113,6 @@
         }).then((unityInstance) => {
           gameInstance = unityInstance;
           
-          // Open the socket
-          socket = io();
-          socket.emit('subscribeToJointsValuesUpdates');
-          
-          // Warn the NodeClient that the game instance is ready, so that 
-          // it can instantiate the socket 
-		      console.log('JS Opening Socket');
           gameInstance.SendMessage('NodeClient', 'GameInstanceReady');
 
 

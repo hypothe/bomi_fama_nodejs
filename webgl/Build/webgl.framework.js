@@ -1272,6 +1272,9 @@ function stackTrace() {
 }
 
 function _InitSocket() {
+ window.socket = io();
+ window.socket.emit("subscribeToJointsValuesUpdates");
+ console.log("JS Opening Socket");
  window.socket.on("connect", function() {
   console.log("JS socket connected");
   window.gameInstance.SendMessage("NodeClient", "SocketConnect");
@@ -1283,7 +1286,7 @@ function _InitSocket() {
    out += jointValue + " ";
   }
   window.document.getElementById("presult").innerHTML = "Joints: " + out;
-  window.gameInstance.SendMessage("NodeClient", "SocketSetJointValues", JSON.stringify(msg));
+  window.gameInstance.SendMessage("NodeClient", "SocketSetJointsValues", JSON.stringify(msg));
  });
 }
 
