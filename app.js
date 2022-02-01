@@ -8,7 +8,6 @@ const server = http.createServer(app);
 const io = new Server(server);
 
 const unity_server = require('http').Server(app);
-const iov2 = require('socket.io-v2')(unity_server);
 
 const conn_port = 4242;
 const unity_conn_port = 4243;
@@ -22,17 +21,10 @@ app.get("", (req, res)=>{
 	res.sendFile(__dirname + '/static/test.html')
 })
 
-iov2.on('connection', (socket) => {
-	// DEBUG
-	console.log("Data received by %s", socket.request.url);
-
-	socket.join(unityRoom);
-
-	socket.on("disconnect", () => {
-		console.log("Unity disconnected %s", socket.request.url);
-	})
-
+app.get("/unity", (req, res)=>{
+	res.sendFile(__dirname + '/webgl/index.html')
 })
+
 
 io.on('connection', (socket) => {
 	// DEBUG
@@ -57,20 +49,12 @@ io.on('connection', (socket) => {
 	// Update the currently stored joints' values and publish
 	// them to all the clients interested in receiving those.
 	socket.on("jointsUpdate", (msg) => {
-		// Send data back to the sockets V4
+		// Send data back to the sockets
 		io.to(jointRoom).emit("getJointsValues", msg);
-		// Send data back to the sockets V2
-		iov2.to(unityRoom).emit("getJointsValues", msg);
 	})
 })
 
 
-
 server.listen(conn_port, () => {
 	console.log("Server started.")
-})
-
-
-unity_server.listen(unity_conn_port, () => {
-	console.log("Unity server started.")
 })
